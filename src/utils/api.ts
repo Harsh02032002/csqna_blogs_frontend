@@ -1,0 +1,32 @@
+import axios, { InternalAxiosRequestConfig } from 'axios';
+
+const API_BASE = (import.meta.env.VITE_API_URL as string) || 'http://localhost:5001/api';
+
+const api = axios.create({
+  baseURL: API_BASE,
+  timeout: 15000,
+});
+
+// Attach token to requests
+api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+  const token = localStorage.getItem('token');
+  if (token && config.headers) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// Handle 401 globally
+api.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    if (err.response?.status === 401) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = '/admin/login';
+    }
+    return Promise.reject(err);
+  }
+);
+
+export default api;

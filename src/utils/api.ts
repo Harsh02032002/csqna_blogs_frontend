@@ -1,6 +1,6 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
 
-const API_BASE = (import.meta.env.VITE_API_URL as string) || 'http://localhost:5001/api';
+const API_BASE = (import.meta.env.VITE_API_URL as string) || 'http://localhost:5010/api';
 
 const api = axios.create({
   baseURL: API_BASE,
@@ -16,11 +16,12 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   return config;
 });
 
-// Handle 401 globally
+// Handle 401 globally — but NOT for the login endpoint itself
 api.interceptors.response.use(
   (res) => res,
   (err) => {
-    if (err.response?.status === 401) {
+    const isLoginCall = err.config?.url?.includes('/auth/login');
+    if (err.response?.status === 401 && !isLoginCall) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       window.location.href = '/admin/login';

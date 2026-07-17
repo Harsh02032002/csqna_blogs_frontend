@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { ShieldAlert, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { Eye, EyeOff, AlertCircle } from 'lucide-react';
 
 export const AdminLogin: React.FC = () => {
   const [email, setEmail] = useState('admin@csqna.com');
@@ -28,51 +28,55 @@ export const AdminLogin: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#07090e] flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 relative overflow-hidden font-sans">
+      {/* Decorative background glows */}
+      <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-violet-200/50 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-indigo-200/50 blur-[120px] pointer-events-none" />
+
+      <div className="w-full max-w-md relative z-10">
         {/* Logo and Info */}
         <div className="text-center mb-8">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 shadow-md shadow-blue-500/25 mb-4">
-            <ShieldAlert className="h-6 w-6 text-white" />
+          <div className="inline-block p-1 bg-white rounded-2xl shadow-xl shadow-slate-100 border border-slate-100 mb-4 transition-transform hover:scale-105 duration-300">
+            <img src="/csqnalogo.png" alt="CSQNA" className="h-12 w-auto object-contain block px-3 py-1" />
           </div>
-          <h1 className="text-2xl font-black font-sans tracking-tight text-white uppercase">CSQNA ADMIN</h1>
-          <p className="text-slate-400 text-xs mt-1">Authenticate to access the management portal.</p>
+          <h1 className="text-2xl font-extrabold tracking-tight text-slate-900">CSQNA ADMIN</h1>
+          <p className="text-slate-500 text-sm mt-1">Authenticate to access the management portal.</p>
         </div>
 
-        <div className="bg-[#0f121d] rounded-2xl border border-slate-800 p-8 shadow-2xl">
+        <div className="bg-white rounded-2xl border border-slate-100 p-8 shadow-[0_20px_50px_rgba(124,58,237,0.06)] backdrop-blur-md">
           {error && (
-            <div className="mb-5 flex items-center gap-2 text-xs font-semibold text-red-400 bg-red-950/20 border border-red-800/30 px-4 py-3 rounded-lg">
-              <AlertCircle size={15} />
+            <div className="mb-6 flex items-center gap-2 text-sm font-semibold text-red-600 bg-red-50 border border-red-100 px-4 py-3 rounded-xl animate-shake">
+              <AlertCircle size={16} className="text-red-500 flex-shrink-0" />
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Email Address</label>
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Email Address</label>
               <input
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 required
-                className="w-full bg-slate-950 border border-slate-800 text-slate-200 placeholder-slate-600 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full bg-slate-50/50 border border-slate-200 text-slate-800 placeholder-slate-400 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-violet-500 focus:bg-white focus:ring-4 focus:ring-violet-500/10 transition-all duration-200"
                 placeholder="admin@csqna.com"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Password</label>
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Password</label>
               <div className="relative">
                 <input
                   type={showPass ? 'text' : 'password'}
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   required
-                  className="w-full bg-slate-950 border border-slate-800 text-slate-200 placeholder-slate-650 rounded-lg px-4 py-2.5 pr-10 text-sm focus:outline-none focus:border-blue-500 transition-colors"
+                  className="w-full bg-slate-50/50 border border-slate-200 text-slate-800 placeholder-slate-400 rounded-xl px-4 py-3 pr-10 text-sm focus:outline-none focus:border-violet-500 focus:bg-white focus:ring-4 focus:ring-violet-500/10 transition-all duration-200"
                   placeholder="••••••••"
                 />
-                <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white">
-                  {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
+                <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
+                  {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
             </div>
@@ -80,7 +84,7 @@ export const AdminLogin: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-blue-700 disabled:cursor-not-allowed text-white font-bold text-xs py-3 rounded-lg transition-colors flex items-center justify-center gap-2 uppercase tracking-wider shadow-lg shadow-blue-500/10"
+              className="w-full bg-violet-600 hover:bg-violet-500 disabled:bg-violet-700 disabled:cursor-not-allowed text-white font-bold text-sm py-3.5 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 uppercase tracking-wider shadow-lg shadow-violet-500/15 hover:shadow-xl hover:shadow-violet-500/25 active:scale-[0.98]"
             >
               {loading ? (
                 <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Authenticating...</>
